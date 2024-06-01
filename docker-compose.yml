@@ -12,3 +12,18 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
+
+  purr_w_db:
+    image: postgres:16-alpine
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+    container_name: purr_w_db
+    volumes:
+      - ~/apps/purr_w_db:/var/lib/postgresql/data
+    ports:
+      - "4005:4005"
+    expose:
+      - "4005"
+    command: -p 4005

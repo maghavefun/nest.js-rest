@@ -45,3 +45,40 @@ Restart the containers
 ```bash
 docker compose restart
 ```
+
+## Open db in GUI
+
+Open current database in drizzle studio
+
+```bash
+npm run inspect:db
+```
+
+Drizzle Studio will be available by [LINK](https://local.drizzle.studio)
+
+## Migrations
+
+Create migration from schema that specified in modules/drizzle/schema.ts. Created migrations will be in /migration folder
+
+```bash
+npm run migration:generate
+```
+
+Apply created migration to current database
+
+```bash
+npm run migration:migrate
+```
+
+## Tests
+
+```bash
+# unit tests
+$ npm run test
+
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
+```
