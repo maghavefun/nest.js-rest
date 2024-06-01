@@ -1,0 +1,14 @@
+services:
+
+  purr_w_rest:
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    container_name: purr_w_rest
+    ports:
+      - "4004:4004"
+    expose:
+      - "4004"
+    volumes:
+      - .:/app
+      - /app/node_modules
