@@ -9,6 +9,7 @@ import * as schema from './modules/drizzle/schema';
 import { AuthService } from './modules/auth/auth.service';
 import { UsersService } from './modules/users/users.service';
 import { JwtService } from '@nestjs/jwt';
+import { ColumnsService } from './modules/columns/columns.service';
 
 @Module({
   imports: [
@@ -27,6 +28,6 @@ import { JwtService } from '@nestjs/jwt';
     UsersModule,
   ],
   controllers: [AppController],
-  providers: [AppService, AuthService, UsersService, JwtService],
+  providers: [AppService, AuthService, UsersService, JwtService, ColumnsService],
 })
 export class AppModule {}

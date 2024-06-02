@@ -7,7 +7,7 @@ import {
   Length,
 } from 'class-validator';
 
-export class UserRegistrationDTO {
+export class RegistrationDTO {
   @ApiProperty({
     example: 'Antony',
     required: true,
@@ -43,7 +43,7 @@ export class UserRegistrationDTO {
   password: string;
 }
 
-export class UserLoginDTO {
+export class LoginDTO {
   @ApiProperty({
     example: 'test@mail.com',
     required: true,

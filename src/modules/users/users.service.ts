@@ -1,7 +1,9 @@
 import {
+  HttpException,
   Inject,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import {
@@ -9,8 +11,9 @@ import {
   POSTGRES_ERROR_CODES,
 } from 'src/core/constants/db.constants';
 import * as schema from '../drizzle/schema';
-import { UserCreatingDTO } from 'src/core/DTO/users.dtos';
+import { UserCreatingDTO, UserUpdatingDTO } from 'src/core/DTO/users.dtos';
 import {
+  User,
   UserWithUserCredentials,
   users,
   usersCredentials,
@@ -20,7 +23,7 @@ import { eq } from 'drizzle-orm';
 @Injectable()
 export class UsersService {
   constructor(
-    @Inject(DRIZZLE_ORM) private db: PostgresJsDatabase<typeof schema>,
+    @Inject(DRIZZLE_ORM) private readonly db: PostgresJsDatabase<typeof schema>,
   ) {}
 
   async createOne(userDTO: UserCreatingDTO) {
@@ -66,6 +69,42 @@ export class UsersService {
       return arrayWithUser;
     } catch (err) {
       throw err;
+    }
+  }
+
+  async findOneById(id: number): Promise<User | HttpException> {
+    try {
+      const arrayWithUser = await this.db
+        .select()
+        .from(users)
+        .where(eq(users.id, id));
+
+      if (arrayWithUser.length === 0) {
+        throw new NotFoundException(`User with id: ${id} not found`);
+      }
+      return arrayWithUser[0];
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async updateOneById(
+    id: number,
+    userDTO: UserUpdatingDTO,
+  ): Promise<User | HttpException> {
+    try {
+      const arrayWithUpdatedUser = await this.db
+        .update(users)
+        .set(userDTO)
+        .where(eq(users.id, id))
+        .returning();
+
+      if (arrayWithUpdatedUser.length === 0) {
+        throw new NotFoundException(`User with id: ${id} not found`);
+      }
+      return arrayWithUpdatedUser[0];
+    } catch (error) {
+      throw error;
     }
   }
 }

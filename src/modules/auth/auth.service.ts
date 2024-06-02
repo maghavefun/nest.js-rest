@@ -1,5 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UserLoginDTO, UserRegistrationDTO } from 'src/core/DTO/auth.dtos';
+import { LoginDTO, RegistrationDTO } from 'src/core/DTO/auth.dtos';
 import { UsersService } from '../users/users.service';
 import { UserCreatingDTO } from 'src/core/DTO/users.dtos';
 import * as bcrypt from 'bcrypt';
@@ -16,7 +16,7 @@ export class AuthService {
     private configService: ConfigService,
   ) {}
 
-  async register(userRegistratingDTO: UserRegistrationDTO): Promise<TokenDTO> {
+  async register(userRegistratingDTO: RegistrationDTO): Promise<TokenDTO> {
     try {
       const salt = await bcrypt.genSalt();
       const hashedPassword = await bcrypt.hash(
@@ -70,9 +70,7 @@ export class AuthService {
     }
   }
 
-  async validateUser(
-    userLoginDTO: UserLoginDTO,
-  ): Promise<UserWithUserCredentials> {
+  async validateUser(userLoginDTO: LoginDTO): Promise<UserWithUserCredentials> {
     try {
       const arrayWithUser = await this.usersService.findOneByEmail(
         userLoginDTO.email,

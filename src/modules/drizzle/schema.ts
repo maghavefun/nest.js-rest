@@ -38,7 +38,9 @@ export const cards = pgTable('cards', {
 
 export const comments = pgTable('comments', {
   id: serial('id').primaryKey(),
-  card_id: integer('card_id').references(() => cards.id),
+  card_id: integer('card_id').references(() => cards.id, {
+    onDelete: 'cascade',
+  }),
   content: varchar('content', { length: 500 }).notNull(),
 });
 
@@ -63,6 +65,9 @@ export const commentRelations = relations(comments, ({ one }) => ({
 
 export type User = InferSelectModel<typeof users>;
 export type UserCredentials = InferSelectModel<typeof usersCredentials>;
+export type Column = InferSelectModel<typeof columns>;
+export type Card = InferSelectModel<typeof cards>;
+export type Comment = InferSelectModel<typeof comments>;
 export interface UserWithUserCredentials {
   users: User;
   user_credentials: UserCredentials;
