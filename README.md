@@ -70,6 +70,10 @@ Apply created migration to current database
 npm run migration:migrate
 ```
 
+## Swagger documentation
+
+Swagger documentation is enable by [LINK](http://localhost:4004/api-docs#/)
+
 ## Tests
 
 ```bash
