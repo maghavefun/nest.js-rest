@@ -19,8 +19,46 @@ export const usersCredentials = pgTable('user_credentials', {
   salt: varchar('salt').notNull(),
 });
 
-export const userRelations = relations(users, ({ one }) => ({
+export const columns = pgTable('columns', {
+  id: serial('id').primaryKey(),
+  user_id: integer('user_id').references(() => users.id, {
+    onDelete: 'cascade',
+  }),
+  title: varchar('title', { length: 256 }).notNull(),
+});
+
+export const cards = pgTable('cards', {
+  id: serial('id').primaryKey(),
+  column_id: integer('column_id').references(() => columns.id, {
+    onDelete: 'cascade',
+  }),
+  title: varchar('title', { length: 256 }).notNull(),
+  description: varchar('description', { length: 500 }),
+});
+
+export const comments = pgTable('comments', {
+  id: serial('id').primaryKey(),
+  card_id: integer('card_id').references(() => cards.id),
+  content: varchar('content', { length: 500 }).notNull(),
+});
+
+export const userRelations = relations(users, ({ one, many }) => ({
   usersCredentials: one(usersCredentials),
+  columns: many(columns),
+}));
+
+export const columnRelations = relations(columns, ({ one, many }) => ({
+  users: one(users),
+  cards: many(cards),
+}));
+
+export const cardRealtions = relations(cards, ({ one, many }) => ({
+  columns: one(columns),
+  comments: many(comments),
+}));
+
+export const commentRelations = relations(comments, ({ one }) => ({
+  cards: one(cards),
 }));
 
 export type User = InferSelectModel<typeof users>;
