@@ -1,2 +1,6 @@
 export const NEST_DRIZZLE_OPTIONS = 'NEST_DRIZZLE_OPTIONS';
 export const DRIZZLE_ORM = 'DRIZZLE_ORM';
+
+export const POSTGRES_ERROR_CODES: Record<string, string> = {
+  UNIQUE_CONSTRAINT_VIOLATION: '23505',
+};

@@ -3,11 +3,16 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { NestDrizzleModule } from './modules/drizzle/drizzle.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
 import * as schema from './modules/drizzle/schema';
+import { AuthService } from './modules/auth/auth.service';
+import { UsersService } from './modules/users/users.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({}),
+    ConfigModule.forRoot({ isGlobal: true }),
     NestDrizzleModule.forRootAsync({
       useFactory: () => {
         return {
@@ -18,8 +23,10 @@ import * as schema from './modules/drizzle/schema';
         };
       },
     }),
+    AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AuthService, UsersService, JwtService],
 })
 export class AppModule {}
