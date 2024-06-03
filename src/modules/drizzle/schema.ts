@@ -45,22 +45,34 @@ export const comments = pgTable('comments', {
 });
 
 export const userRelations = relations(users, ({ one, many }) => ({
-  usersCredentials: one(usersCredentials),
+  usersCredentials: one(usersCredentials, {
+    fields: [users.id],
+    references: [usersCredentials.user_id],
+  }),
   columns: many(columns),
 }));
 
 export const columnRelations = relations(columns, ({ one, many }) => ({
-  users: one(users),
+  users: one(users, {
+    fields: [columns.user_id],
+    references: [users.id],
+  }),
   cards: many(cards),
 }));
 
 export const cardRealtions = relations(cards, ({ one, many }) => ({
-  columns: one(columns),
+  columns: one(columns, {
+    fields: [cards.column_id],
+    references: [columns.id],
+  }),
   comments: many(comments),
 }));
 
 export const commentRelations = relations(comments, ({ one }) => ({
-  cards: one(cards),
+  cards: one(cards, {
+    fields: [comments.card_id],
+    references: [cards.id],
+  }),
 }));
 
 export type User = InferSelectModel<typeof users>;
