@@ -13,10 +13,13 @@ async function bootstrap() {
 
   setupSwagger(app);
 
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.use(cookieParser());
   await app.listen(port);
 
-  logger.log(`Backend is runnig on http://localhost:${port}`);
+  const env = configService.get('NODE_ENV');
+  if (env === 'dev') {
+    logger.log(`Backend is runnig on http://localhost:${port}`);
+  }
 }
 bootstrap();

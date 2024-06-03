@@ -1,5 +1,4 @@
 import {
-  HttpException,
   Inject,
   Injectable,
   InternalServerErrorException,
@@ -72,15 +71,15 @@ export class UsersService {
     }
   }
 
-  async findOneById(id: number): Promise<User | HttpException> {
+  async findOneById(userId: number): Promise<User> {
     try {
       const arrayWithUser = await this.db
         .select()
         .from(users)
-        .where(eq(users.id, id));
+        .where(eq(users.id, userId));
 
       if (arrayWithUser.length === 0) {
-        throw new NotFoundException(`User with id: ${id} not found`);
+        throw new NotFoundException(`User with id: ${userId} not found`);
       }
       return arrayWithUser[0];
     } catch (err) {
@@ -88,19 +87,16 @@ export class UsersService {
     }
   }
 
-  async updateOneById(
-    id: number,
-    userDTO: UserUpdatingDTO,
-  ): Promise<User | HttpException> {
+  async updateOneById(userId: number, userDTO: UserUpdatingDTO): Promise<User> {
     try {
       const arrayWithUpdatedUser = await this.db
         .update(users)
         .set(userDTO)
-        .where(eq(users.id, id))
+        .where(eq(users.id, userId))
         .returning();
 
       if (arrayWithUpdatedUser.length === 0) {
-        throw new NotFoundException(`User with id: ${id} not found`);
+        throw new NotFoundException(`User with id: ${userId} not found`);
       }
       return arrayWithUpdatedUser[0];
     } catch (error) {

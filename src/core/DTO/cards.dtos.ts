@@ -1,8 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
 import { IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
 import { Card } from 'src/modules/drizzle/schema';
 
-export class CardCreatingDTO implements Omit<Card, 'id' | 'column_id'> {
+export class CardCreatingDTO implements Card {
+  @Exclude()
+  id: number;
+
+  @Exclude()
+  column_id: number;
+
   @ApiProperty({
     example: 'Buy groceries',
     required: true,
@@ -13,7 +20,7 @@ export class CardCreatingDTO implements Omit<Card, 'id' | 'column_id'> {
   title: string;
 
   @ApiProperty({
-    example: 'Go to groceries store\n1. Buy milk. \n 2.Buy bread',
+    example: 'Go to groceries store: 1. Buy milk. 2.Buy bread',
     required: false,
   })
   @IsString()
@@ -21,9 +28,13 @@ export class CardCreatingDTO implements Omit<Card, 'id' | 'column_id'> {
   description: string;
 }
 
-export class CardUpdatingDTO
-  implements Partial<Omit<Card, 'id' | 'column_id'>>
-{
+export class CardUpdatingDTO implements Partial<Card> {
+  @Exclude()
+  id: number;
+
+  @Exclude()
+  column_id: number;
+
   @ApiProperty({
     example: 'Buy groceries',
     required: false,
@@ -34,7 +45,7 @@ export class CardUpdatingDTO
   title?: string;
 
   @ApiProperty({
-    example: 'Go to groceries store\n1. Buy milk. \n 2.Buy bread',
+    example: 'Go to groceries store. 1. Buy milk. 2.Buy bread',
     required: false,
   })
   @IsString()

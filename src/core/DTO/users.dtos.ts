@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
 import { IsEmail, IsOptional, IsString } from 'class-validator';
 import { User } from 'src/modules/drizzle/schema';
 
@@ -10,7 +11,10 @@ export interface UserCreatingDTO {
   salt: string;
 }
 
-export class UserUpdatingDTO implements Partial<Omit<User, 'id'>> {
+export class UserUpdatingDTO implements Partial<User> {
+  @Exclude()
+  id: number;
+
   @ApiProperty({
     example: 'Silvio',
     required: false,

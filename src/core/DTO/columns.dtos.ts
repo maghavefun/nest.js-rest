@@ -1,8 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
 import { IsNotEmpty, IsString, Length } from 'class-validator';
 import { Column } from 'src/modules/drizzle/schema';
 
-export class ColumnCreatingDTO implements Omit<Column, 'id' | 'user_id'> {
+export class ColumnCreatingDTO implements Column {
+  @Exclude()
+  id: number;
+
+  @Exclude()
+  user_id: number;
+
   @ApiProperty({
     example: 'To Do',
     required: true,
@@ -13,9 +20,13 @@ export class ColumnCreatingDTO implements Omit<Column, 'id' | 'user_id'> {
   title: string;
 }
 
-export class ColumnUpdatingDTO
-  implements Partial<Omit<Column, 'id' | 'user_id'>>
-{
+export class ColumnUpdatingDTO implements Partial<Column> {
+  @Exclude()
+  id: number;
+
+  @Exclude()
+  user_id: number;
+
   @ApiProperty({
     example: 'Done',
     required: true,
