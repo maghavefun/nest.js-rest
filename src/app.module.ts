@@ -28,6 +28,12 @@ import { CommentsService } from './modules/comments/comments.service';
     UsersModule,
   ],
   controllers: [AppController],
-  providers: [AppService, AuthService, UsersService, JwtService, CommentsService],
+  providers: [
+    AppService,
+    AuthService,
+    UsersService,
+    JwtService,
+    CommentsService,
+  ],
 })
 export class AppModule {}
