@@ -29,7 +29,6 @@ export class CommentsService {
           .where(eq(cards.id, cardId));
 
         if (arrayWithRelatedCardForComment.length === 0) {
-          tx.rollback();
           throw new NotFoundException(
             `Cannot create comment. Card with id:${cardId} not found`,
           );

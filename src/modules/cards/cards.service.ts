@@ -23,7 +23,6 @@ export class CardsService {
           .where(eq(columns.id, columnId));
 
         if (arrayWithRelatedColumnForCard.length === 0) {
-          await tx.rollback();
           throw new NotFoundException(
             `Cannot create card. Column with id:${columnId} not found`,
           );

@@ -25,7 +25,6 @@ export class ColumnsService {
       const arrayWithCreatedColumn = await this.db.transaction(async (tx) => {
         const user = await tx.select().from(users).where(eq(users.id, userId));
         if (user.length === 0) {
-          await tx.rollback();
           throw new NotFoundException(
             `Cannot create column. User with id:${userId} not found`,
           );
