@@ -601,6 +601,3 @@ export class UsersController {
     await this.commentsService.deleteById(Number(cardId), Number(commentId));
   }
 }
-
-//3. создать userIdGuard
-//4. добвить userIdGuard ко всем методам где есть userId
